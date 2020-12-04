@@ -31,10 +31,48 @@
         (loop (cdr file)
               (cond
                 [(equal? col 1) (append result (list (caar file)))]
-                [(equal? col 2) (append result (list (cadar file)))]
+                [(equal? col 2) (append result (list (string->number(cadar file))))]
                 [(equal? col 3) (append result (list (string->number(caddar file))))]
                 [(equal? col 4) (append result (list (string->number(car (cdddar file)))))]
                 [(equal? col 5) (append result (list (string->number(cadr (cdddar file)))))]
                 [(equal? col 6) (append result (list (string->number(caddr (cdddar file)))))]
                 [(equal? col 7) (append result (list (string->number(car (cdddr (cdddar file))))))]
                 )))))
+
+(define (suma-SMA col n)
+  (let loop
+    ([n n]
+     [res 0]
+     [col col])
+    (if (zero? n)
+        res
+        (loop (sub1 n) (+ res (car col)) (cdr col)))))
+
+(define (get-SMA days)
+  (let loop
+    ([col (get-column 6)]
+     [result empty])
+    (if (empty? col)
+        result
+        (loop (cdr col)(append result (list (suma-SMA col days)))))))
+#|
+(define (suma-SMA2 col n)
+  (let loop
+    ([n n]
+     [res 0]
+     [col col])
+    (if (empty? col)
+    (if (zero? n)
+        res
+        (loop (sub1 n) (+ res (car col)) (cdr col))))))
+   |#                                           
+
+
+#|
+(define (get-EMA col dias)
+  (let loop
+    ([ema1 (suma-SMA col dias)]
+     [ema2 ()]
+     [result empty]
+|#
+              
