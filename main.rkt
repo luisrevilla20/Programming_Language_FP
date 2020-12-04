@@ -53,7 +53,7 @@
     ([cont n]
      [res 0]
      [col col])
-    (if (zero? cont)
+    (if  (zero? cont)
         (/ res n)
         (loop (sub1 cont) (+ res (car col)) (cdr col)))))
 
@@ -61,19 +61,30 @@
   (cond
     ((null? list)
      '()) ;; error?
-    ((null? (cdr list))
-     '())
-    (else
-     (cons  (suma-SMA list days) (get-SMA (cdr list) days)))))                                         
+    ;((null? (cdr list))
+     ;'())
+    ( (>= (length list) days)
+     (cons  (suma-SMA list days) (get-SMA (cdr list) days)))))
 
+;(define (get-SMA2 col days)
+
+(define (sum-EMA val1 val2 days)
+  (+(* val2(/ 2 (add1 days))) (* val1 (- 1 (/ 2 (add1 days))))))
+  
 
 (define (get-EMA col days)
   (let loop
-    ([result (append empty (suma-SMA col days))]
+    ([result (append empty (list (suma-SMA col days)))]
      [cont days]
      [val1 (suma-SMA col days)]
-     [val2 (list-ref col (add1 days))])
-(if (equal? (length col) cont)
-    result
-    (loop (append result (list (+(* val2(/ 2 (add1 days))) (* val1 (- 1 (/ 2 (add1 days))))))) (add1 cont) (last_element result)(list-ref col (add1 days))))))
+     [val2 (list-ref col (add1 days))]
+     [a (length col)])
+    (if (equal? a cont)
+        result
+        (loop (append result (list (sum-EMA val1 val2 days))) (add1 cont) (last_element result)(list-ref col (add1 days)) (length (cdr col))) )))
+#|
+(define (repeat col n)
+  (let loop
+    (
+|#
 
