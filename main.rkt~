@@ -82,18 +82,6 @@
     (if (equal? a cont)
         result
         (loop (append result (list (sum-EMA val1 val2 days))) (add1 cont) (last_element result)(list-ref col (add1 days)) (length (cdr col))) )))
-
-
-(define (get-MACD col day1 day2 )
-  (let loop
-       ([result (append empty (list ( - (get-EMA col day1) ((get-EMA col day2)))))]
-        [cont day1]
-        [val1 (get-EMA col day1)]
-        [val2 (get-EMA col day2)]
-        [a (length col)])
-   ( if ( equal? a cont)
-     result
-        (loop (append result (list ( - (get-EMA col day1) ((get-EMA col day2))))) (add1 cont) (last_element result)(list-ref col (add1 day2)) (length (cdr col))) )))
 #|
 (define (repeat col n)
   (let loop
