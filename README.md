@@ -3,7 +3,7 @@
 #### Class: *Programing Languages*
 
 ##### Participants :
-1.*Luis Revilla* - *A01022320* 
+1. *Luis Revilla* - *A01022320* 
 2. *Naji M A Saadat* - *A01025599* 
 
 
