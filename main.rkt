@@ -64,13 +64,13 @@
      [result empty])
     (if (>= (length col) days)
         (loop (cdr col) (append result (list(suma-SMA col days))))
-        result)))
-        
+        result)))      
 
+;Function that solves part of the equation in order to get the EMA
 (define (sum-EMA val1 val2 days)
   (+(* val2(/ 2 (add1 days))) (* val1 (- 1 (/ 2 (add1 days))))))
   
-
+;Function that returns the EMA solved of a list
 (define (get-EMA col days)
   (let loop
     ([result  (list (suma-SMA col days))]
@@ -82,24 +82,7 @@
         result
          (loop (append result (list (sum-EMA val1 val2 days))) (add1 cont) (last_element result)(list-ref col  cont) (length (cdr col))) )))
 
-(define (sumatoria col n)
-  (let loop
-    ([cont n]
-     [res 0]
-     [col col])
-    (if  (zero? cont)
-         res
-        (loop (sub1 cont) (+ res (car col)) (cdr col)))))
-#|
-(define (get-sumatoria col days)
-  (let loop
-    ([col col]
-     [result empty])
-    (if (>= (length col) days)
-        (loop (cdr col) (append result (list(sumatoria col days))))
-        result)))
-|#
-
+;Function that returns a list with factors up to n
 (define (get-factores n)
   (let loop
     ([n n]
@@ -108,6 +91,7 @@
         result
         (loop (sub1 n) (append result (list n))))))
 
+;Functions that returns a list n element of another list
 (define (get-elements col n)
   (let loop
     ([col col]
@@ -117,10 +101,12 @@
         result
         (loop (cdr col) (sub1 n) (append result (list (car col)))))))
 
-(define (solve-TMA baa days)
-  (define a (foldr + 0 baa))
+;Function that helps to solve the equation of TMA indicator
+(define (solve-TMA l days)
+  (define a (foldr + 0 l))
  (/ a (foldr + 0 (get-factores days))))
 
+;Function that get product of n elements of a list and the factors and return it in a list
 (define (sum-TMA col days)
   (let loop
     ([list1  col]
@@ -133,6 +119,7 @@
         result
          (loop (cdr list1) (cdr list2) (append result (list (* (car list1) (car list2))))))))
 
+;Function that retunrns the TMA of n of the first element
 (define (sum-TMA2 days)
   (let loop
     ([list1  (get-column 5)]
@@ -144,7 +131,8 @@
            [(empty? list2) (loop list1 (get-factores (/ days 2)) (solve-TMA result (/ days 2)))]
            [(empty? list1) result]
          [else (loop (cdr list1) (cdr list2) (append result (list (* (car list1) (car list2)))))])))
-      
+
+;Function that skips n elements of a list   
 (define (jump col n)
   (let loop
     ([col col]
@@ -153,6 +141,8 @@
     col
     (loop (cdr col) (sub1 n)))))
 
+;Function that return the MACD indicator of a list by comparing two different EMAS
+;day1 should be bigger than day2
 (define (get-MACD col day1 day2)
   (let loop
     ([val1 (jump (get-EMA col day1) (- day2 day1))]
@@ -161,6 +151,7 @@
     (if (empty? val1)
         result
         (loop (cdr val1) (cdr val2) (append result (list (- ( car val1) (car val2))))))))
+
 
 (define (minimum lst acc)
   (cond
@@ -175,6 +166,7 @@
       #f
       (minimum (cdr lst) (car lst))))
 
+;Function that return the difference between the closed price and the min value of the last 5 lower prices
 (define (min)
   (let loop
     ([val (get-column 5)]
@@ -198,6 +190,7 @@
       [else                       
          (loop (cdr L) m)])))
 
+;Function that return the difference between the max price and the min value of the last 5 lower prices
 (define (max)
   (let loop
     ([val (get-column 3)]
@@ -212,6 +205,7 @@
       ;[(equal? 2 n) (loop  (cdr val) (cdr col) (append col2 (list (car col))) (append result (list (- (car val) (mymin col2)))) 2)]
       [else (loop (cdr val) (cdr col) (append col2 (list (car col))) (append val2 (list (car val))) result (sub1 n))])))
 
+;Function that divides (min) / (max)
 (define (mid)
   (let loop
     ([min (min)]
@@ -221,6 +215,7 @@
         result
         (loop (cdr min) (cdr max) (append result (list (/ (car min) (car max))))))))
 
+;Function that returns the strchrastic indicator
 (define (get-STOC)
   (let loop
     ([mid (mid)]
