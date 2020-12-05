@@ -93,7 +93,7 @@
    ( if ( equal? a cont)
      result
         (loop (append result (list ( - (get-EMA col day1) ((get-EMA col day2))))) (add1 cont) (last_element result)(list-ref col (add1 day2)) (length (cdr col))) )))
-#|
+
 (define (sumatoria col n)
   (let loop
     ([cont n]
@@ -102,7 +102,7 @@
     (if  (zero? cont)
          res
         (loop (sub1 cont) (+ res (car col)) (cdr col)))))
-
+#|
 (define (get-sumatoria col days)
   (let loop
     ([col col]
@@ -135,21 +135,27 @@
 
 (define (sum-TMA col days)
   (let loop
-    ([list1 (get-elements col days)]
+    ([list1  col]
      [list2 (get-factores (/ days 2))]
      [result empty])
-     (if (empty? list1)
-        ; (solve-TMA result (/ days 2))
+     ;(if (empty? list2)
+         ;(sum-TMA list1 days)
+         (if (empty? list2)
+             ;(solve-TMA result (/ days 2))
         result
          (loop (cdr list1) (cdr list2) (append result (list (* (car list1) (car list2))))))))
-      
-(define (prueba col days)
+
+(define (sum-TMA2 days)
   (let loop
-    ([col col]
-     [list2  (get-factores (/ days 2))]
-     [result result]
-     [n n])
-    (if (zero?)
-        result
-        (loop (cdr col)
+    ([list1  (get-column 5)]
+     [list2 (get-factores (/ days 2))]
+     [result empty])
+     ;(if (empty? list2)
+         ;(sum-TMA list1 days)
+         (cond
+           [(empty? list2) (loop list1 (get-factores (/ days 2)) (solve-TMA result (/ days 2)))]
+           [(empty? list1) result]
+         [else (loop (cdr list1) (cdr list2) (append result (list (* (car list1) (car list2)))))])))
+      
+      
     
